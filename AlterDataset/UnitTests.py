@@ -3,7 +3,7 @@ import sys
 
 # we need these sys.path alterations so we can import files that aren't in the exact same directory as this UnitTests file
 sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/GenderSwapping/')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/PostProcessExtractions/PostProcessExtractionsNormalize')
+sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/PostProcessExtractionsNormalize')
 sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/FilterGenderedSentences')
 from genderSwap import *
 from Normalize import *
