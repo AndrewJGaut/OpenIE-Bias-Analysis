@@ -1,3 +1,7 @@
 he; is; a doctor
-
 she; is; a secretary
+that man over there; is; a nurse
+she is; also; a nurse
+
+he nurse
+she doctor

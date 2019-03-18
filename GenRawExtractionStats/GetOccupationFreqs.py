@@ -142,14 +142,6 @@ def getOccupationFreqs(relations_file_name):
 
 
 '''
-The below two functions are key functions so we can correctly output values in sorted order in createOutputFiles
-'''
-def takeMaleFreq(dictionary, occ):
-    return dictionary[occ].get_male_freq
-def takeFemaleFreq(dictionary, occ):
-    return dictionary[occ].get_female_freq
-
-'''
 Parameters:
     args - the command line arguments obtained using the CLI
     occupationFreqs - the dictionary of occupations and their frequencies created in getOccupationFreqs
@@ -187,10 +179,90 @@ def createOutputFiles(args, occupationFreqs):
     male_outfile.close()
     female_outfile.close()
 
+
+'''
+Parameters:
+    in_str - the string we're reading from and generating occupation frequencies from
+
+What it does:
+    The below function is used for testing only
+    Instead of reading from and writing to files, it reads from and writes to strings
+    This makes it easy to test occupationFreqs function
+    Outputs give male stats first, then female stats
+'''
+def testOccupationFreqs(in_str):
+    # get occupations set and gendered sets
+    occupations = loadOccupations()
+    maleSet, femaleSet = createGenderedSets()
+
+    # create dictionaries that map occupations --> their frequencies
+    # it uses Occupation objects so male and female frequencies are stored in same object
+    occupationFreqs = dict()
+
+    # set up inflect engine (this just allows for better cleaning)
+    infl = inflect.engine()
+
+    # go through all relations in extractions files
+    # check how many times occupations and gendered words co-occur
+    for line in in_str.split('\n'):
+        # create a list so we can get all occupations in this line
+        occupations_in_this_extraction = list()
+
+        # boolean values telling if extraction has male words or female words
+        # NOTE: we DO NOT double count occupations or gendered words in the same extraction.
+        #       this means 'he and his dad were doctors' only increments doctors' male count by 1
+        #       and 'he was a doctor and a good doctor' only increments doctors' male count by 1 as well!
+        has_male_words = False
+        has_female_words = False
+
+        # loop through words in extraction
+        for word in nltk.word_tokenize(line):
+            # normalize the word
+            word = clean(word, infl)
+
+            if word in maleSet:
+                has_male_words = True
+            if word in femaleSet:
+                has_female_words = True
+            if word in occupations and word not in occupations_in_this_extraction:
+                occupations_in_this_extraction.append(word)
+
+        # now, update occupation frequency dictionaries
+        for occupation in occupations_in_this_extraction:
+            occ = Occupation(occupation)
+            if (occupation in occupationFreqs):
+                occ = occupationFreqs[occupation]
+
+            occ.incr_total_freq()
+            if has_male_words:
+                occ.incr_male_freq()
+            if has_female_words:
+                occ.incr_female_freq()
+
+            if occupation not in occupationFreqs:
+                occupationFreqs[occupation] = occ
+
+
+    out_str = ""
+
+    for occ in sorted(occupationFreqs, key=occupationFreqs.get, reverse=False):
+        out_str += str(occupationFreqs[occ].occupation) + " - " + str(occupationFreqs[occ].get_male_freq()) + '\n'
+
+    out_str += '\n'
+
+    for occ in sorted(occupationFreqs, key=occupationFreqs.get, reverse=False):
+        out_str += str(occupationFreqs[occ].occupation) + " - " + str(occupationFreqs[occ].get_female_freq()) + '\n'
+
+    return out_str
+
+
+
 if __name__ == '__main__':
     args = setUpCommandLine()
     occupationFreqs = getOccupationFreqs(args.extr_file)
     createOutputFiles(args, occupationFreqs)
+
+
 
 
 

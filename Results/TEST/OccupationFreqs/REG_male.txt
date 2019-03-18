@@ -1,2 +1,3 @@
 doctor - 1
+nurse - 2
 secretary - 0

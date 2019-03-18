@@ -5,11 +5,13 @@ import sys
 sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/GenderSwapping/')
 sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/PostProcessExtractionsNormalize')
 sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/FilterGenderedSentences')
+sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/GenRawExtractionStats')
 from genderSwap import *
 from Normalize import *
 from filterGendered import *
+from GetOccupationFreqs import *
 
-class TestGenderSwap(unittest.TestCase):
+class Tests(unittest.TestCase):
     def test_replaceInStr(self):
         self.assertEqual(replaceInStr("yes", "no", 4, "I am no that man"), "I am yes that man")
         self.assertEqual(replaceInStr("yes", "no", 0, "no, I am not that man"), "yes, I am not that man")
