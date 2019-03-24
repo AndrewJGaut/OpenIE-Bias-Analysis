@@ -4,18 +4,15 @@ For instance, genderswapping 'He loves his mom' --> 'She loves her dad'
 
 '''
 
-
+import os
 import string
 import random
 import nltk
 import inflect
 from NameProbs import NameProb
 
-#dataset_file = "NOW_articles_genderedsentencesonly.txt"
-#dataset_file = "test.txt"
-#genderPairs = dict()
-out_file_name = "NOW_articles_GS_prob_genderedsentencesonly.txt"
-gender_pairs_file = "../../NamesAndSwapLists/swap_listnorepeats.txt"
+
+gender_pairs_file = "../../NamesAndSwapLists/swap_list_norepeats.txt"
 
 '''
 Parameters:
@@ -175,12 +172,11 @@ def genderSwap(gender_pairs_file, dataset_file_name, out_file_name):
     orig_malenames, orig_femalenames = createGenderedSets()
     genderPairs = createSwapDict(gender_pairs_file)
 
-    # get files ready
+    # get outfile ready
     out_file = open(out_file_name, "w")
-    dataset_file = open(dataset_file_name, "r")
 
     # start reading in lines from the dataset
-    with open(dataset_file) as file:
+    with open(dataset_file_name) as file:
         for line in file.readlines():
             i = 0
             while i < len(line):
@@ -293,4 +289,7 @@ def genderSwapTesting(gender_pairs_file, in_str):
 
 
 if __name__ == '__main__':
-    genderSwap(gender_pairs_file, dataset_file, out_file_name)
+    for file in os.listdir('./DatasetsToGenderSwap/QASRL_Dataset/'):
+        out_file_name = './GenderswappedDatasets/' + file
+        os.makedirs(os.path.dirname(out_file_name), exist_ok=True)
+        genderSwap(gender_pairs_file, './DatasetsToGenderSwap/QASRL_Dataset/'+ file, out_file_name)
