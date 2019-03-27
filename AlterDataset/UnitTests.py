@@ -35,9 +35,30 @@ class Tests(unittest.TestCase):
             "Will he ever find his aunt or his uncle, or his brother, or his daughter?"
         )
 
+        '''
+        self.assertEqual(
+            genderSwapTesting("../../NamesAndSwapLists/swap_list.txt",
+                              "My mom's car is here."),
+            "My dad's car is here."
+        )
+        '''
+
+
+
+    #@unittest.skip
     def test_genderSwapNames(self):
-        pass
         #this is hard to test because you'd have to manually average out the name counts to check if it's running correclty
+        '''self.assertEqual(
+            genderSwapTesting("../../NamesAndSwapLists/swap_list.txt",
+                              "Will Amy ever find her uncle or her aunt, or her sister, or her son?"),
+            "Will <MALE NAME> ever find his aunt or his uncle, or his brother, or his daughter?"
+        )'''
+
+        self.assertEqual(
+            genderSwapTesting("../../NamesAndSwapLists/swap_list.txt",
+                              "My name is Jack, my sister's name is Jill, and my dad's name is Jim."),
+            "My name is <FEMALE NAME>, my sister's name is <MALE NAME>, and my mom's name is <FEMALE NAME>."
+        )
 
     def test_normlize(self):
         self.assertEqual(
@@ -70,6 +91,18 @@ class Tests(unittest.TestCase):
             getGenderedDatasetTesting("I like ACTORS!!!!!! I don't like hers."),
             "I like ACTORS!\n I don't like hers.\n"
         )
+
+    def test_genderSwap2(self):
+        '''self.assertEqual(
+            genderSwapTesting2("../../NamesAndSwapLists/swap_list.txt",
+                               "Will Amy ever find the love of her life?"),
+            "Will <MALE NAME> ever find the love his life?"
+        )'''
+        pass
+        '''self.assertEqual(
+            GST2("../../NamesAndSwapLists/swap_list.txt", "Will Amy ever find love?"),
+            "Will <MALE NAME> ever find love?"
+        )'''
 
 if __name__ == '__main__':
     unittest.main()

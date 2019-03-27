@@ -8,7 +8,7 @@ import os
 import string
 import random
 import nltk
-import inflect
+from nltk.tag import StanfordNERTagger
 from NameProbs import NameProb
 
 
@@ -157,6 +157,27 @@ def replaceInStr(replacement, curr_word, index_before_word, line):
     new_line = new_line1 + new_line2
     return new_line
 
+'''
+Parameters:
+    line - any string representing a line
+What it does:
+    Returns an array of all indices of all names in the line
+'''
+def findNames(line):
+    line = line.split()
+
+    # set up NER tagger
+    stanford_ner_tagger = StanfordNERTagger (
+        '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/classifiers/english.muc.7class.distsim.crf.ser.gz',
+        '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/stanford-ner-3.9.2.jar'
+    )
+
+    name_indices = list()
+    tags = stanford_ner_tagger.tag(line.split())
+    for i in range(len(tags)):
+        if tags[i][1] == 'PERSON':
+            list.append(i)
+
 
 '''
 Parameters
@@ -263,6 +284,60 @@ def genderSwapTesting(gender_pairs_file, in_str):
                     replacement = genderPairs[clean(curr_word)]
                     line = replaceInStr(replacement, curr_word, index_before_word, line)
                 elif clean_word in orig_malenames or clean_word in orig_femalenames  and curr_word != "will" and curr_word != "max" and curr_word != "hunter" and curr_word != "king" and curr_word != "rich" and curr_word != "storm" and curr_word != "stormy":
+                    if clean_word in maleNames and clean_word in femaleNames:
+                        # take the higher probability one
+                        replacement = ""
+                        if(maleNames[clean_word] > femaleNames[clean_word] and (clean_word in orig_malenames)):
+                            replacement = getName(clean(curr_word), maleNames, femaleNamesList)
+                        elif(clean_word in orig_femalenames):
+                            replacement = getName(clean(curr_word), femaleNames, maleNamesList)
+                        else:
+                            i += 1
+                            continue
+                        replacement = replacement[0].upper() + replacement[1:]
+                        line = replaceInStr(replacement, curr_word, index_before_word, line)
+                    elif clean_word in maleNames and clean_word in orig_malenames:
+                        replacement = getName(clean(curr_word), maleNames, femaleNamesList)
+                        replacement = replacement[0].upper() + replacement[1:]
+                        line = replaceInStr(replacement, curr_word, index_before_word, line)
+                    elif clean_word in femaleNames and clean_word in orig_femalenames:
+                        replacement = getName(clean(curr_word), femaleNames, maleNamesList)
+                        replacement = replacement[0].upper() + replacement[1:]
+                        line = replaceInStr(replacement, curr_word, index_before_word, line)
+            i += 1
+        out_str += line
+    return out_str
+
+'''
+The same thing as the original genderSwapTesting function, but uses NER to find names!
+'''
+def GST2(gender_pairs_file, in_str):
+    maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
+    orig_malenames, orig_femalenames = createGenderedSets()
+    genderPairs = createSwapDict(gender_pairs_file)
+
+    out_str = ""
+    lines = in_str.split('\n')
+
+    for line in lines:
+        i = 0
+        word_pos = -1
+        name_pos = findNames(line)
+        while i < len(line):
+            index_before_word = i
+            curr_word = ""
+
+            while(i < len(line) and not line[i].isspace()):
+                curr_word += line[i]
+                i += 1
+            word_pos += 1
+
+            if len(curr_word) > 0 and curr_word[0].isalpha():
+                clean_word = clean(curr_word)
+                if clean_word in genderPairs:
+                    replacement = genderPairs[clean(curr_word)]
+                    line = replaceInStr(replacement, curr_word, index_before_word, line)
+                elif word_pos in name_pos:
                     if clean_word in maleNames and clean_word in femaleNames:
                         # take the higher probability one
                         replacement = ""
