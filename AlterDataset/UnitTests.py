@@ -1,5 +1,6 @@
 import unittest
 import sys
+import os
 
 # we need these sys.path alterations so we can import files that aren't in the exact same directory as this UnitTests file
 sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/GenderSwapping/')
@@ -45,7 +46,7 @@ class Tests(unittest.TestCase):
 
 
 
-    #@unittest.skip
+    @unittest.skip
     def test_genderSwapNames(self):
         #this is hard to test because you'd have to manually average out the name counts to check if it's running correclty
         '''self.assertEqual(
@@ -92,17 +93,30 @@ class Tests(unittest.TestCase):
             "I like ACTORS!\n I don't like hers.\n"
         )
 
-    def test_genderSwap2(self):
-        '''self.assertEqual(
-            genderSwapTesting2("../../NamesAndSwapLists/swap_list.txt",
-                               "Will Amy ever find the love of her life?"),
-            "Will <MALE NAME> ever find the love his life?"
-        )'''
-        pass
-        '''self.assertEqual(
-            GST2("../../NamesAndSwapLists/swap_list.txt", "Will Amy ever find love?"),
-            "Will <MALE NAME> ever find love?"
-        )'''
+    def test_genderswapQASRL(self):
+        curr_file_path = './Testing/TestInputs/QASRL_testfile_1.txt'
+        os.makedirs(curr_file_path)
+
+        # write our test stuff to the file
+        curr_file = open(curr_file_path, 'w')
+        curr_file.write("PROPBANK_57	1\n"
+                        + "His recent appearance at the Metropolitan Museum , dubbed `` A Musical Odyssey , '' was a case in point .\n"
+                        + "8	dubbed	2\n"
+                        + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
+                        + "what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum")
+
+        genderswapQASRL(curr_file_path, './TestOutputs/answer_file_1.txt')
+        out_file = open('./TestOutputs/answer_file_1.txt', 'r')
+        self.assertEqual(
+            out_file.read(),
+            "PROPBANK_57	1\n"
+            + "Her recent appearance at the Metropolitan Museum , dubbed `` A Musical Odyssey , '' was a case in point .\n"
+            + "8	dubbed	2\n"
+            + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
+            + "what	was	_	dubbed	_	_	_	?	Her recent appearance at the Metropolitan Museum"
+        )
+
+
 
 if __name__ == '__main__':
     unittest.main()
