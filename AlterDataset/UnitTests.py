@@ -3,10 +3,10 @@ import sys
 import os
 
 # we need these sys.path alterations so we can import files that aren't in the exact same directory as this UnitTests file
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/GenderSwapping/')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/PostProcessExtractionsNormalize')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/FilterGenderedSentences')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/GenRawExtractionStats')
+sys.path.insert(0, './GenderSwapping/')
+sys.path.insert(0, './PostProcessExtractionsNormalize')
+sys.path.insert(0, './FilterGenderedSentences')
+sys.path.insert(0, '../GenRawExtractionStats')
 from genderSwap import *
 from Normalize import *
 from filterGendered import *
@@ -95,7 +95,8 @@ class Tests(unittest.TestCase):
 
     def test_genderswapQASRL(self):
         curr_file_path = './Testing/TestInputs/QASRL_testfile_1.txt'
-        os.makedirs(curr_file_path)
+        #if not os.path.isfile(curr_file_path):
+        #    os.makedirs(curr_file_path)
 
         # write our test stuff to the file
         curr_file = open(curr_file_path, 'w')

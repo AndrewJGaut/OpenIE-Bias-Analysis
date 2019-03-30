@@ -329,7 +329,7 @@ def createNER(dataset_file_name):
     file.close()
 
     #get NER annotations for those sentences
-    command = "python tagger/tagger.py --model tagger/models/english/ --input " + input_file_name + " --output " + output_file_name
+    command = "python NER/tagger/tagger.py --model tagger/models/english/ --input " + input_file_name + " --output " + output_file_name
     process = Popen(command, stdout=stderr, shell=True)
     process.wait()
 

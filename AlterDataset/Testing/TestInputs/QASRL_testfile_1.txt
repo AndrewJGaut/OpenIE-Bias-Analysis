@@ -1,0 +1,5 @@
+PROPBANK_57	1
+His recent appearance at the Metropolitan Museum , dubbed `` A Musical Odyssey , '' was a case in point .
+8	dubbed	2
+what	was	something	dubbed	_	_	_	?	A Musical Odyssey
+what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum
