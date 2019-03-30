@@ -5,10 +5,10 @@ This helps us speed up obtaining the openIE extractions
 
 import re
 import inflect
+import os
+import sys
 
-#file = open("NOW_genderswapped_randomswapnames.txt", "r")
-#file = open("spaces_preprocessed_NOW_news_corpus.txt", "r")
-#out_file = open("NOW_genderswapped_randomnames_genderedsentencesonly3.txt", "w")
+
 
 '''
 What it does:
@@ -19,13 +19,13 @@ def createGenderedSet():
     genderedSet = set()
     infl = inflect.engine()
 
-    with open("../../NamesAndSwapLists/male_first_names.txt") as file:
+    with open("../NamesAndSwapLists/male_first_names.txt") as file:
         for line in file.readlines():
             genderedSet.add(clean(line.strip().lower(), infl))
-    with open("../../NamesAndSwapLists/female_first_names.txt") as file:
+    with open("../NamesAndSwapLists/female_first_names.txt") as file:
         for line in file.readlines():
             genderedSet.add(clean(line.strip().lower(), infl))
-    with open("../../NamesAndSwapLists/swap_list_norepeats.txt", "r") as file:
+    with open("../NamesAndSwapLists/swap_list_norepeats.txt", "r") as file:
         for line in file.readlines():
             word1, word2 = line.split()
 

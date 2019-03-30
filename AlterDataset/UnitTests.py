@@ -5,15 +5,23 @@ import os
 
 
 # we need these sys.path alterations so we can import files that aren't in the exact same directory as this UnitTests file
-this_dir_path = os.path.dirname(__file__)
+this_dir_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, this_dir_path + '/GenderSwapping/')
 sys.path.insert(0, this_dir_path + '/PostProcessExtractionsNormalize')
 sys.path.insert(0, this_dir_path + '/FilterGenderedSentences')
-sys.path.insert(0, '../GenRawExtractionStats')
+sys.path.insert(0, './GenderSwapping/')
+sys.path.insert(0, './PostProcessExtractionsNormalize')
+sys.path.insert(0,'./FilterGenderedSentences')
+#sys.path.insert(0, '../GenRawExtractionStats/')
+
+#os.chdir('../')
+#sys.path.insert(0, 'GenRawExtractionsStats/')
+#os.chdir('AlterDataset/')
+
 from genderSwap import *
 from Normalize import *
 from filterGendered import *
-from GetOccupationFreqs import *
+#from GetOccupationFreqs import *
 
 class Tests(unittest.TestCase):
     def test_replaceInStr(self):
