@@ -1,11 +1,14 @@
+from __future__ import absolute_import
 import unittest
 import sys
 import os
 
+
 # we need these sys.path alterations so we can import files that aren't in the exact same directory as this UnitTests file
-sys.path.insert(0, './GenderSwapping/')
-sys.path.insert(0, './PostProcessExtractionsNormalize')
-sys.path.insert(0, './FilterGenderedSentences')
+this_dir_path = os.path.dirname(__file__)
+sys.path.insert(0, this_dir_path + '/GenderSwapping/')
+sys.path.insert(0, this_dir_path + '/PostProcessExtractionsNormalize')
+sys.path.insert(0, this_dir_path + '/FilterGenderedSentences')
 sys.path.insert(0, '../GenRawExtractionStats')
 from genderSwap import *
 from Normalize import *
