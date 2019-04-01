@@ -19,13 +19,13 @@ def createGenderedSet():
     genderedSet = set()
     infl = inflect.engine()
 
-    with open("../NamesAndSwapLists/male_first_names.txt") as file:
+    with open("../../NamesAndSwapLists/male_first_names.txt") as file:
         for line in file.readlines():
             genderedSet.add(clean(line.strip().lower(), infl))
-    with open("../NamesAndSwapLists/female_first_names.txt") as file:
+    with open("../../NamesAndSwapLists/female_first_names.txt") as file:
         for line in file.readlines():
             genderedSet.add(clean(line.strip().lower(), infl))
-    with open("../NamesAndSwapLists/swap_list_norepeats.txt", "r") as file:
+    with open("../../NamesAndSwapLists/swap_list_norepeats.txt", "r") as file:
         for line in file.readlines():
             word1, word2 = line.split()
 

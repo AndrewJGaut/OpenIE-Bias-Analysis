@@ -12,6 +12,7 @@ from nltk.tag import StanfordNERTagger
 from NameProbs import NameProb
 from subprocess import Popen
 from sys import stderr
+import os
 
 
 gender_pairs_file = "../../NamesAndSwapLists/swap_list_norepeats.txt"
@@ -315,8 +316,8 @@ def createNER(dataset_file_name):
     #first pass: write all sentences to file
     input_file_name = './QASRLSentencesOnly/' + dataset_file_name + "_sentences.txt"
     output_file_name = './QASRL_NER/' + dataset_file_name + "_sentences_NER.txt"
-    os.makedirs(input_file_name)
-    os.makedirs(output_file_name)
+    os.makedirs(os.path.dirname(input_file_name), exist_ok=True)
+    os.makedirs(os.path.dirname(output_file_name), exist_ok=True)
     input_file = open(input_file_name, "w")
     for unit in file.read().split('\n\n'):
         lines = unit.split('\n')
@@ -329,7 +330,7 @@ def createNER(dataset_file_name):
     file.close()
 
     #get NER annotations for those sentences
-    command = "python NER/tagger/tagger.py --model tagger/models/english/ --input " + input_file_name + " --output " + output_file_name
+    command = "python2.7 NER/tagger/tagger.py --model tagger/models/english/ --input " + input_file_name + " --output " + output_file_name
     process = Popen(command, stdout=stderr, shell=True)
     process.wait()
 

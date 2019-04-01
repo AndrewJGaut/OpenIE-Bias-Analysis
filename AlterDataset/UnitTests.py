@@ -12,6 +12,7 @@ sys.path.insert(0, this_dir_path + '/FilterGenderedSentences')
 sys.path.insert(0, './GenderSwapping/')
 sys.path.insert(0, './PostProcessExtractionsNormalize')
 sys.path.insert(0,'./FilterGenderedSentences')
+sys.path.insert(0, this_dir_path)
 #sys.path.insert(0, '../GenRawExtractionStats/')
 
 #os.chdir('../')
@@ -105,9 +106,9 @@ class Tests(unittest.TestCase):
         )
 
     def test_genderswapQASRL(self):
-        curr_file_path = './Testing/TestInputs/QASRL_testfile_1.txt'
-        #if not os.path.isfile(curr_file_path):
-        #    os.makedirs(curr_file_path)
+        curr_file_path = 'Testing/TestInputs/QASRL_testfile_1.txt'
+        if not os.path.isfile(curr_file_path):
+            os.makedirs(os.path.dirname(curr_file_path), exist_ok=True)
 
         # write our test stuff to the file
         curr_file = open(curr_file_path, 'w')
@@ -117,8 +118,8 @@ class Tests(unittest.TestCase):
                         + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
                         + "what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum")
 
-        genderswapQASRL(curr_file_path, './TestOutputs/answer_file_1.txt')
-        out_file = open('./TestOutputs/answer_file_1.txt', 'r')
+        genderswapQASRL(curr_file_path, 'TestOutputs/answer_file_1.txt')
+        out_file = open('TestOutputs/answer_file_1.txt', 'r')
         self.assertEqual(
             out_file.read(),
             "PROPBANK_57	1\n"
