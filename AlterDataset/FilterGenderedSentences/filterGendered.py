@@ -8,6 +8,10 @@ import inflect
 import os
 import sys
 
+from os.path import dirname, abspath, join
+sys.path.insert(0, join(dirname(dirname(dirname(abspath(__file__)))), 'Utility/'))
+from utility import *
+
 
 
 '''
@@ -19,13 +23,29 @@ def createGenderedSet():
     genderedSet = set()
     infl = inflect.engine()
 
-    with open("../../NamesAndSwapLists/male_first_names.txt") as file:
+    male_first_names_file = getTextfile('NamesAndSwapLists', 'male_first_names.txt')
+    female_first_names_file = getTextfile('NamesAndSwapLists', 'female_first_names.txt') 
+    swap_list_file = getTextfile('NamesAndSwapLists', 'swap_list_norepeats.txt')
+
+    for line in male_first_names_file.readlines():
+        genderedSet.add(clean(line.strip().lower(), infl))
+    for line in female_first_names_file.readlines():
+        genderedSet.add(clean(line.strip().lower(), infl))
+    for line in swap_list_file.readlines():
+        word1, word2 = line.split()
+        #put both pairs in so search is faster
+        #space still won't be too big
+        genderedSet.add(word1)
+        genderedSet.add(word2)
+
+    ''' 
+    with open("../../../NamesAndSwapLists/male_first_names.txt") as file:
         for line in file.readlines():
             genderedSet.add(clean(line.strip().lower(), infl))
-    with open("../../NamesAndSwapLists/female_first_names.txt") as file:
+    with open("../../../NamesAndSwapLists/female_first_names.txt") as file:
         for line in file.readlines():
             genderedSet.add(clean(line.strip().lower(), infl))
-    with open("../../NamesAndSwapLists/swap_list_norepeats.txt", "r") as file:
+    with open("../../../NamesAndSwapLists/swap_list_norepeats.txt", "r") as file:
         for line in file.readlines():
             word1, word2 = line.split()
 
@@ -33,6 +53,7 @@ def createGenderedSet():
             #space still won't be too big
             genderedSet.add(word1)
             genderedSet.add(word2)
+    '''
 
     return genderedSet
 
