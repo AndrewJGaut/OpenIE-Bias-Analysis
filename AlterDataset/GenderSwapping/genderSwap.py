@@ -11,11 +11,13 @@ import nltk
 from nltk.tag import StanfordNERTagger
 from NameProbs import NameProb
 from subprocess import Popen
+import sys
 from sys import stderr
-import os
 
+from os.path import dirname, abspath, join
+sys.path.insert(0, join(dirname(dirname(dirname(abspath(__file__)))), 'Utility/'))
+from utility import *
 
-gender_pairs_file = "../../NamesAndSwapLists/swap_list_norepeats.txt"
 
 '''
 Parameters:
@@ -56,19 +58,30 @@ def getName(curr_name, this_gender_names, opposite_gender_names):
 
 '''
 What it does:
-    Creates lists for male names and female names from files without probabilities attached to them
-    Returns these lists
+    Creates sets for male names and female names from files without probabilities attached to them
+    Returns these sets 
 '''
 def createGenderedSets():
     maleNames = set()
     femaleNames = set()
+    
+    male_first_names_file = getTextfile('NamesAndSwapLists', 'male_first_names.txt')
+    female_first_names_file = getTextfile('NamesAndSwapLists', 'female_first_names.txt')
 
+    for line in male_first_names_file.readlines():
+        maleNames.add(line.strip().lower())
+    for line in female_first_names_file.readlines():
+        femaleNames.add(line.strip().lower())
+
+
+    ''''
     with open("../../NamesAndSwapLists/male_first_names.txt") as file:
         for line in file.readlines():
             maleNames.add(line.strip().lower())
     with open("../../NamesAndSwapLists/female_first_names.txt") as file:
         for line in file.readlines():
             femaleNames.add(line.strip().lower())
+    '''
 
     return maleNames, femaleNames
 
@@ -79,12 +92,36 @@ What it does:
     Creates lists -- maleNamesList and femaleNamesList -- that contain NameProbs with names and their probabilities
 '''
 def createGenderedSetsAndLists():
+    os.chdir(dirname(abspath(__file__)))
+
     maleNames = dict()
     femaleNames = dict()
     maleNamesList = list()
     femaleNamesList = list()
 
     for i in range(8):
+        curr_names_file = getTextfile('NamesAndSwapLists', 'yob201' + str(i) + '.txt')
+        for line in curr_names_file.readlines():
+            name, gender, probability = line.split(',')
+            name = clean(name.strip().lower())
+            probability = int(probability.strip())
+            if(gender == 'M'):
+                if name not in maleNames:
+                    maleNames[name] = probability
+                else:
+                    maleNames[name] += probability
+            elif(gender == 'F'):
+                if name not in femaleNames:
+                    femaleNames[name] = probability
+                else:
+                    femaleNames[name] += probability
+            else:
+                print("GENDER NOT VALID")
+        curr_names_file.close()
+
+
+
+        '''
         with open("../../NamesAndSwapLists/yob201" + str(i) + ".txt") as file:
             for line in file.readlines():
                 name, gender, probability = line.split(',')
@@ -102,6 +139,7 @@ def createGenderedSetsAndLists():
                         femaleNames[name] += probability
                 else:
                     print("GENDER NOT VALID")
+        '''
 
     #normalize the counts
     for name in maleNames:
@@ -117,16 +155,16 @@ def createGenderedSetsAndLists():
 What it does:
     Creates a dictionary that maps a gendered word to its swap word (an equivalent word for the other gender)
 '''
-def createSwapDict(gender_pairs_file):
+def createSwapDict():
     genderPairs = dict()
-    with open(gender_pairs_file, "r") as file:
-        for line in file.readlines():
-            word1, word2 = line.split()
+    gender_pairs_file = getTextfile('NamesAndSwapLists', 'swap_list_norepeats.txt') 
+    for line in gender_pairs_file.readlines():
+        word1, word2 = line.split()
 
-            #put both pairs in so search is faster
-            #space still won't be too big
-            genderPairs[word1] = word2
-            genderPairs[word2] = word1
+        #put both pairs in so search is faster
+        #space still won't be too big
+        genderPairs[word1] = word2
+        genderPairs[word2] = word1
 
     return genderPairs
 
@@ -170,11 +208,11 @@ Parameters
 What it does:
     genderswaps the dataset and outputs it to file named out_file_name
 '''
-def genderSwap(gender_pairs_file, dataset_file_name, out_file_name):
+def genderSwap(dataset_file_name, out_file_name):
     #first, create necessary sets and lists
     maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
     orig_malenames, orig_femalenames = createGenderedSets()
-    genderPairs = createSwapDict(gender_pairs_file)
+    genderPairs = createSwapDict()
 
     # get outfile ready
     out_file = open(out_file_name, "w")
@@ -243,10 +281,10 @@ def genderSwap(gender_pairs_file, dataset_file_name, out_file_name):
 The same thing as the original genderSwap function, except returns strings instead of printing to files and gets input from string
 This makes it easier to test the function (we can use assertEquals and we can give it strings)
 '''
-def genderSwapTesting(gender_pairs_file, in_str):
+def genderSwapTesting(in_str):
     maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
     orig_malenames, orig_femalenames = createGenderedSets()
-    genderPairs = createSwapDict(gender_pairs_file)
+    genderPairs = createSwapDict()
 
     out_str = ""
     lines = in_str.split('\n')
@@ -311,11 +349,13 @@ What it does:
     Creates an output file using state-of-the-art NER containing NER analysis on the dataset file
 '''
 def createNER(dataset_file_name):
-    file = open(dataset_file_name, 'r')
+    os.chdir(dirname(abspath(__file__)))
+
+    file = open(dataset_file_name) 
 
     #first pass: write all sentences to file
-    input_file_name = './QASRLSentencesOnly/' + dataset_file_name + "_sentences.txt"
-    output_file_name = './QASRL_NER/' + dataset_file_name + "_sentences_NER.txt"
+    input_file_name = './QASRL_Data/QASRLSentencesOnly/' + dataset_file_name + "_sentences.txt"
+    output_file_name = './QASRL_Data/QASRL_NER/' + dataset_file_name + "_sentences_NER.txt"
     os.makedirs(os.path.dirname(input_file_name), exist_ok=True)
     os.makedirs(os.path.dirname(output_file_name), exist_ok=True)
     input_file = open(input_file_name, "w")
@@ -334,6 +374,8 @@ def createNER(dataset_file_name):
     process = Popen(command, stdout=stderr, shell=True)
     process.wait()
 
+    file.close()
+
     return output_file_name
 
 
@@ -346,7 +388,7 @@ What it does:
 '''
 def genderswapQASRL(dataset_file_name, out_file_name):
     maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
-    genderPairs = createSwapDict(gender_pairs_file)
+    genderPairs = createSwapDict()
     NER_file_name = createNER(dataset_file_name)
 
     dataset_file = open(dataset_file_name, 'r')
@@ -398,11 +440,16 @@ def genderswapQASRL(dataset_file_name, out_file_name):
             out_file.write(line)
 
         unit_counter += 1
-
+        
+    # close files
+    curr_file.close()
+    ner_file.close()
+    out_file.close()
 
 
 if __name__ == '__main__':
     for file in os.listdir('./DatasetsToGenderSwap/QASRL_Dataset/'):
         out_file_name = './GenderswappedDatasets/' + file
-        os.makedirs(os.path.dirname(out_file_name), exist_ok=True)
-        genderSwap(gender_pairs_file, './DatasetsToGenderSwap/QASRL_Dataset/'+ file, out_file_name)
+        parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        os.makedirs(os.path.join(parent_dir,out_file_name), exist_ok=True)
+        genderSwap('./DatasetsToGenderSwap/QASRL_Dataset/'+ file, out_file_name)

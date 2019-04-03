@@ -9,6 +9,7 @@ this_dir_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, this_dir_path + '/GenderSwapping/')
 sys.path.insert(0, this_dir_path + '/PostProcessExtractionsNormalize')
 sys.path.insert(0, this_dir_path + '/FilterGenderedSentences')
+sys.path.insert(0, os.path.dirname(this_dir_path) + '/GenRawExtractionStats/')
 sys.path.insert(0, './GenderSwapping/')
 sys.path.insert(0, './PostProcessExtractionsNormalize')
 sys.path.insert(0,'./FilterGenderedSentences')
@@ -22,7 +23,7 @@ sys.path.insert(0, this_dir_path)
 from genderSwap import *
 from Normalize import *
 from filterGendered import *
-#from GetOccupationFreqs import *
+from GetOccupationFreqs import *
 
 class Tests(unittest.TestCase):
     def test_replaceInStr(self):
@@ -33,18 +34,17 @@ class Tests(unittest.TestCase):
 
     def test_genderSwapNoName(self):
         self.assertEqual(
-            genderSwapTesting("../../NamesAndSwapLists/swap_list_norepeats.txt", "She was a secretary."),
+            genderSwapTesting("She was a secretary."),
             "he was a secretary."
         )
 
         self.assertEqual(
-            genderSwapTesting("../../NamesAndSwapLists/swap_list_norepeats.txt", "Her father did not like her mother; she was an actress."),
+            genderSwapTesting("Her father did not like her mother; she was an actress."),
             "his mother did not like his father; he was an actor."
         )
 
         self.assertEqual(
-            genderSwapTesting("../../NamesAndSwapLists/swap_list.txt",
-                              "Will she ever find her uncle or her aunt, or her sister, or her son?"),
+            genderSwapTesting("Will she ever find her uncle or her aunt, or her sister, or her son?"),
             "Will he ever find his aunt or his uncle, or his brother, or his daughter?"
         )
 
@@ -106,9 +106,14 @@ class Tests(unittest.TestCase):
         )
 
     def test_genderswapQASRL(self):
-        curr_file_path = 'Testing/TestInputs/QASRL_testfile_1.txt'
-        if not os.path.isfile(curr_file_path):
-            os.makedirs(os.path.dirname(curr_file_path), exist_ok=True)
+        #os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'GenderSwapping'))
+
+        curr_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'GenderSwapping/Testing/TestInputs/QASRL_testfile_1.txt')
+        out_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'GenderSwapping/Testing/TestOutputs/QASRL_answerfile_1.txt')
+        #curr_file_path = './Testing/TestInputs/QASRL_testfile_1.txt'
+        #out_file_path = './Testing/TestOutputs/QASRL_answerfile_1.txt'
+        os.makedirs(os.path.dirname(curr_file_path), exist_ok=True)
+        os.makedirs(os.path.dirname(out_file_path), exist_ok=True)
 
         # write our test stuff to the file
         curr_file = open(curr_file_path, 'w')
@@ -118,8 +123,8 @@ class Tests(unittest.TestCase):
                         + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
                         + "what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum")
 
-        genderswapQASRL(curr_file_path, 'TestOutputs/answer_file_1.txt')
-        out_file = open('TestOutputs/answer_file_1.txt', 'r')
+        genderswapQASRL(curr_file_path, out_file_path)
+        out_file = open(out_file_path, 'r')
         self.assertEqual(
             out_file.read(),
             "PROPBANK_57	1\n"
@@ -128,7 +133,7 @@ class Tests(unittest.TestCase):
             + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
             + "what	was	_	dubbed	_	_	_	?	Her recent appearance at the Metropolitan Museum"
         )
-
+        out_file.close()
 
 
 if __name__ == '__main__':
