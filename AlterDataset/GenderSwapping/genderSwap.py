@@ -349,13 +349,11 @@ What it does:
     Creates an output file using state-of-the-art NER containing NER analysis on the dataset file
 '''
 def createNER(dataset_file_name):
-    os.chdir(dirname(abspath(__file__)))
-
-    file = open(dataset_file_name) 
+    file = open(join(dirname(abspath(__file__)), dataset_file_name))
 
     #first pass: write all sentences to file
-    input_file_name = './QASRL_Data/QASRLSentencesOnly/' + dataset_file_name + "_sentences.txt"
-    output_file_name = './QASRL_Data/QASRL_NER/' + dataset_file_name + "_sentences_NER.txt"
+    input_file_name = join(dirname(abspath(__file__)), 'QASRL_Data/QASRLSentencesOnly/' + dataset_file_name[0:-4] + "_sentences.txt")
+    output_file_name = join(dirname(abspath(__file__)), 'QASRL_Data/QASRL_NER/' + dataset_file_name[0:-4] + "_sentences_NER.txt")
     os.makedirs(os.path.dirname(input_file_name), exist_ok=True)
     os.makedirs(os.path.dirname(output_file_name), exist_ok=True)
     input_file = open(input_file_name, "w")
@@ -370,7 +368,8 @@ def createNER(dataset_file_name):
     file.close()
 
     #get NER annotations for those sentences
-    command = "python2.7 NER/tagger/tagger.py --model tagger/models/english/ --input " + input_file_name + " --output " + output_file_name
+    tagger_path = join(dirname(abspath(__file__)), 'NER/tagger/')
+    command = "python2.7 " + tagger_path + "tagger.py --model " + tagger_path + "models/english/ --input " + input_file_name + " --output " + output_file_name
     process = Popen(command, stdout=stderr, shell=True)
     process.wait()
 
@@ -391,8 +390,10 @@ def genderswapQASRL(dataset_file_name, out_file_name):
     genderPairs = createSwapDict()
     NER_file_name = createNER(dataset_file_name)
 
-    dataset_file = open(dataset_file_name, 'r')
-    out_file = open(out_file_name, 'r')
+    curr_path = dirname(abspath(__file__))
+
+    dataset_file = open(join(curr_path,dataset_file_name), 'r')
+    out_file = open(join(curr_path,out_file_name), 'w')
 
     ner_file = open(NER_file_name, 'r')
     ner_lines = ner_file.readlines()
@@ -442,7 +443,7 @@ def genderswapQASRL(dataset_file_name, out_file_name):
         unit_counter += 1
         
     # close files
-    curr_file.close()
+    dataset_file.close()
     ner_file.close()
     out_file.close()
 
