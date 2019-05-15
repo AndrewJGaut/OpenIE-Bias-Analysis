@@ -61,7 +61,6 @@ def createGenderedSet():
 What it does:
     Removes all non-alphanumerics from word AND makes the word singular (not plural)
     Used to check if words are in the set
-
 '''
 def clean(str, infl):
     cleanStr = ""

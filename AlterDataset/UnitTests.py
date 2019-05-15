@@ -121,7 +121,11 @@ class Tests(unittest.TestCase):
                         + "His recent appearance at the Metropolitan Museum , dubbed `` A Musical Odyssey , '' was a case in point .\n"
                         + "8	dubbed	2\n"
                         + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
-                        + "what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum")
+                        + "what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum\n\n")
+
+        #now, reset the file paths so they're not absolute
+        curr_file_path = 'Testing/TestInputs/QASRL_testfile_1.txt'
+        out_file_path = 'Testing/TestOutputs/QASRL_answerfile_1.txt'
 
         genderswapQASRL(curr_file_path, out_file_path)
         out_file = open(out_file_path, 'r')
