@@ -10,9 +10,39 @@ import random
 import nltk
 from nltk.tag import StanfordNERTagger
 from NameProbs import NameProb
+from subprocess import Popen
+import sys
+from sys import stderr
+import inflect
+
+from nltk.tag import StanfordNERTagger
+from nltk.tokenize import word_tokenize
+
+st = StanfordNERTagger('/Users/agaut/PycharmProjects/TestStuff/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz',
+                       '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/stanford-ner-3.9.2.jar',
+					   encoding='utf-8')
+
+engine = inflect.engine()
+
+from os.path import dirname, abspath, join
+sys.path.insert(0, join(dirname(dirname(dirname(abspath(__file__)))), 'Utility/'))
+from utility import *
 
 
-gender_pairs_file = "../../NamesAndSwapLists/swap_list_norepeats.txt"
+'''
+What it does:
+    Removes all non-alphanumerics from word AND makes the word singular (not plural)
+    Used to check if words are in the set
+'''
+def clean(str, infl):
+    cleanStr = ""
+    for char in str:
+        if(char.isalpha()):
+            cleanStr += char.lower()
+    if(infl.singular_noun(cleanStr)):
+        cleanStr = infl.singular_noun(cleanStr)
+
+    return cleanStr
 
 '''
 Parameters:
@@ -53,19 +83,30 @@ def getName(curr_name, this_gender_names, opposite_gender_names):
 
 '''
 What it does:
-    Creates lists for male names and female names from files without probabilities attached to them
-    Returns these lists
+    Creates sets for male names and female names from files without probabilities attached to them
+    Returns these sets 
 '''
 def createGenderedSets():
     maleNames = set()
     femaleNames = set()
+    
+    male_first_names_file = getTextfile('NamesAndSwapLists', 'male_first_names.txt')
+    female_first_names_file = getTextfile('NamesAndSwapLists', 'female_first_names.txt')
 
+    for line in male_first_names_file.readlines():
+        maleNames.add(line.strip().lower())
+    for line in female_first_names_file.readlines():
+        femaleNames.add(line.strip().lower())
+
+
+    ''''
     with open("../../NamesAndSwapLists/male_first_names.txt") as file:
         for line in file.readlines():
             maleNames.add(line.strip().lower())
     with open("../../NamesAndSwapLists/female_first_names.txt") as file:
         for line in file.readlines():
             femaleNames.add(line.strip().lower())
+    '''
 
     return maleNames, femaleNames
 
@@ -76,12 +117,36 @@ What it does:
     Creates lists -- maleNamesList and femaleNamesList -- that contain NameProbs with names and their probabilities
 '''
 def createGenderedSetsAndLists():
+    os.chdir(dirname(abspath(__file__)))
+
     maleNames = dict()
     femaleNames = dict()
     maleNamesList = list()
     femaleNamesList = list()
 
     for i in range(8):
+        curr_names_file = getTextfile('NamesAndSwapLists', 'yob201' + str(i) + '.txt')
+        for line in curr_names_file.readlines():
+            name, gender, probability = line.split(',')
+            name = clean(name.strip().lower(), engine)
+            probability = int(probability.strip())
+            if(gender == 'M'):
+                if name not in maleNames:
+                    maleNames[name] = probability
+                else:
+                    maleNames[name] += probability
+            elif(gender == 'F'):
+                if name not in femaleNames:
+                    femaleNames[name] = probability
+                else:
+                    femaleNames[name] += probability
+            else:
+                print("GENDER NOT VALID")
+        curr_names_file.close()
+
+
+
+        '''
         with open("../../NamesAndSwapLists/yob201" + str(i) + ".txt") as file:
             for line in file.readlines():
                 name, gender, probability = line.split(',')
@@ -99,6 +164,7 @@ def createGenderedSetsAndLists():
                         femaleNames[name] += probability
                 else:
                     print("GENDER NOT VALID")
+        '''
 
     #normalize the counts
     for name in maleNames:
@@ -114,30 +180,18 @@ def createGenderedSetsAndLists():
 What it does:
     Creates a dictionary that maps a gendered word to its swap word (an equivalent word for the other gender)
 '''
-def createSwapDict(gender_pairs_file):
+def createSwapDict():
     genderPairs = dict()
-    with open(gender_pairs_file, "r") as file:
-        for line in file.readlines():
-            word1, word2 = line.split()
+    gender_pairs_file = getTextfile('NamesAndSwapLists', 'swap_list_norepeats.txt') 
+    for line in gender_pairs_file.readlines():
+        word1, word2 = line.split()
 
-            #put both pairs in so search is faster
-            #space still won't be too big
-            genderPairs[word1] = word2
-            genderPairs[word2] = word1
+        #put both pairs in so search is faster
+        #space still won't be too big
+        genderPairs[word1] = word2
+        genderPairs[word2] = word1
 
     return genderPairs
-
-'''
-What it does:
-    Return str with all non-alphabetic characters removed
-'''
-def clean(str):
-    cleanStr = ""
-    for char in str:
-        if(char.isalpha()):
-            cleanStr += char.lower()
-
-    return cleanStr
 
 '''
 Parameters:
@@ -157,41 +211,71 @@ def replaceInStr(replacement, curr_word, index_before_word, line):
     new_line = new_line1 + new_line2
     return new_line
 
-'''
-Parameters:
-    line - any string representing a line
-What it does:
-    Returns an array of all indices of all names in the line
-'''
-def findNames(line):
-    line = line.split()
-
-    # set up NER tagger
-    stanford_ner_tagger = StanfordNERTagger (
-        '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/classifiers/english.muc.7class.distsim.crf.ser.gz',
-        '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/stanford-ner-3.9.2.jar'
-    )
-
-    name_indices = list()
-    tags = stanford_ner_tagger.tag(line.split())
-    for i in range(len(tags)):
-        if tags[i][1] == 'PERSON':
-            list.append(i)
-
 
 '''
 Parameters
     gender_pairs_file - the file containing all the swap pairs
     dataset_file - the file containing the dataset we're genderswapping
     out_file_name - the filename to write the genderswapped dataset to
+    test - whether or not we're testing. If true, then no outfile is written to and dataset_file_name is the input text we want to test genderswapping with!
 What it does:
     genderswaps the dataset and outputs it to file named out_file_name
 '''
-def genderSwap(gender_pairs_file, dataset_file_name, out_file_name):
+def genderSwap(dataset_file_name, out_file_name, test=False):
     #first, create necessary sets and lists
     maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
     orig_malenames, orig_femalenames = createGenderedSets()
-    genderPairs = createSwapDict(gender_pairs_file)
+    genderPairs = createSwapDict()
+
+    file = dataset_file_name
+    lines = file.split('\n')
+    if not test:
+        file = open(dataset_file_name, 'r')
+        lines = file.readlines()
+
+    out_str = ""
+    # start reading in lines from the dataset
+    for line in lines:
+        i = 0
+        words = word_tokenize(line)
+        pos_tags = st.tag(words)
+        for i in range(len(words)):
+            word = clean(words[i], engine)
+            if pos_tags[i][1] == 'PERSON':
+                #then, this might be a name!
+                if word in maleNames and word in femaleNames:
+                    if maleNames[word] > femaleNames[word]:
+                        words[i] = getName(word, maleNames, femaleNamesList)
+                    else:
+                        words[i] = getName(word, femaleNames, maleNamesList)
+                elif word in maleNames:
+                    words[i] = getName(word, maleNames, femaleNamesList)
+                elif word in femaleNames:
+                    words[i] = getName(word, femaleNames, maleNamesList)
+            elif word in genderPairs:
+                words[i] = genderPairs[word]
+        line = ' '.join(words)
+        out_str += line + "\n"
+    if not test:
+        file.close()
+
+    if not test:
+        # get outfile ready
+        out_file = open(out_file_name, "w")
+        out_file.write(out_str)
+        out_file.close()
+
+    return out_str
+
+'''
+The same thing as the original genderSwap function, except returns strings instead of printing to files and gets input from string
+This makes it easier to test the function (we can use assertEquals and we can give it strings)
+'''
+def genderSwapTesting(in_str):
+    #first, create necessary sets and lists
+    maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
+    orig_malenames, orig_femalenames = createGenderedSets()
+    genderPairs = createSwapDict()
 
     # get outfile ready
     out_file = open(out_file_name, "w")
@@ -200,171 +284,39 @@ def genderSwap(gender_pairs_file, dataset_file_name, out_file_name):
     with open(dataset_file_name) as file:
         for line in file.readlines():
             i = 0
-            while i < len(line):
-                index_before_word = i
-                curr_word = ""
-
-                # start finding each word in the line
-                # we demarcate words using spaces
-                # we don't use ntlk.word_tokenize because we need the index before the word starts
-                while(i < len(line) and not line[i].isspace()):
-                    curr_word += line[i]
-                    i += 1
-
-                if len(curr_word) > 0 and curr_word[0].isalpha():
-                    clean_word = clean(curr_word)
-
-                    # check if word is a word in the swap list
-                    # if so, replace with its swap word
-                    if clean_word in genderPairs:
-                        replacement = genderPairs[clean(curr_word)]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-
-                    # check if word is in list of male names or female names
-                    # if so, then we want to see if its a male name or a female name and then find its closest probability genderswap
-                    # NOTE: some names are really common; including them would screw up the gender-swapping; what should we do?
-                    elif clean_word in orig_malenames or clean_word in orig_femalenames  and curr_word != "will" and curr_word != "max" and curr_word != "hunter" and curr_word != "king" and curr_word != "rich" and curr_word != "storm" and curr_word != "stormy":
-
-                        # if clean_word is in both male and female names, then we simply assign it the gender to which it has the highest probability of belonging
-                        if clean_word in maleNames and clean_word in femaleNames:
-                            replacement = ""
-                            if(maleNames[clean_word] > femaleNames[clean_word] and (clean_word in orig_malenames)):
-                                replacement = getName(clean(curr_word), maleNames, femaleNamesList)
-                            elif(clean_word in orig_femalenames):
-                                replacement = getName(clean(curr_word), femaleNames, maleNamesList)
-                            else:
-                                i += 1
-                                continue
-                            replacement = replacement[0].upper() + replacement[1:]
-                            line = replaceInStr(replacement, curr_word, index_before_word, line)
-
-                        # if clean word is ONLY in maleNames, then swap it with its closest probability female name
-                        elif clean_word in maleNames and clean_word in orig_malenames:
-                            replacement = getName(clean(curr_word), maleNames, femaleNamesList)
-                            replacement = replacement[0].upper() + replacement[1:]
-                            line = replaceInStr(replacement, curr_word, index_before_word, line)
-
-                        # swap with male name
-                        elif clean_word in femaleNames and clean_word in orig_femalenames:
-                            replacement = getName(clean(curr_word), femaleNames, maleNamesList)
-                            replacement = replacement[0].upper() + replacement[1:]
-                            line = replaceInStr(replacement, curr_word, index_before_word, line)
-                i += 1
+            words = word_tokenize(line)
+            pos_tags = st.tag(words)
+            for i in range(len(words)):
+                word = clean_word(words[i])
+                if pos_tags[i][1] == 'PERSON':
+                    #then, this might be a name!
+                    if word in maleNames and word in femaleNames:
+                        if maleNames[word] > femaleNames[word]:
+                            words[i] = getName(word, maleNames, femaleNamesList)
+                        else:
+                            words[i] = getName(word, femaleNames, maleNamesList)
+                    elif word in maleNames:
+                        words[i] = getName(word, maleNames, femaleNamesList)
+                    elif word in femaleNames:
+                        words[i] = getName(word, femaleNames, maleNamesList)
+                elif word in genderPairs:
+                    words[i] = genderPairs[word]
+            line = ' '.join(words)
             out_file.write(line)
 
     print(maleNames)
     print(femaleNames)
     out_file.close()
 
-'''
-The same thing as the original genderSwap function, except returns strings instead of printing to files and gets input from string
-This makes it easier to test the function (we can use assertEquals and we can give it strings)
-'''
-def genderSwapTesting(gender_pairs_file, in_str):
-    maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
-    orig_malenames, orig_femalenames = createGenderedSets()
-    genderPairs = createSwapDict(gender_pairs_file)
-
-    out_str = ""
-    lines = in_str.split('\n')
-
-    for line in lines:
-        i = 0
-        while i < len(line):
-            index_before_word = i
-            curr_word = ""
-
-            while(i < len(line) and not line[i].isspace()):
-                curr_word += line[i]
-                i += 1
-
-            if len(curr_word) > 0 and curr_word[0].isalpha():
-                clean_word = clean(curr_word)
-                if clean_word in genderPairs:
-                    replacement = genderPairs[clean(curr_word)]
-                    line = replaceInStr(replacement, curr_word, index_before_word, line)
-                elif clean_word in orig_malenames or clean_word in orig_femalenames  and curr_word != "will" and curr_word != "max" and curr_word != "hunter" and curr_word != "king" and curr_word != "rich" and curr_word != "storm" and curr_word != "stormy":
-                    if clean_word in maleNames and clean_word in femaleNames:
-                        # take the higher probability one
-                        replacement = ""
-                        if(maleNames[clean_word] > femaleNames[clean_word] and (clean_word in orig_malenames)):
-                            replacement = getName(clean(curr_word), maleNames, femaleNamesList)
-                        elif(clean_word in orig_femalenames):
-                            replacement = getName(clean(curr_word), femaleNames, maleNamesList)
-                        else:
-                            i += 1
-                            continue
-                        replacement = replacement[0].upper() + replacement[1:]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-                    elif clean_word in maleNames and clean_word in orig_malenames:
-                        replacement = getName(clean(curr_word), maleNames, femaleNamesList)
-                        replacement = replacement[0].upper() + replacement[1:]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-                    elif clean_word in femaleNames and clean_word in orig_femalenames:
-                        replacement = getName(clean(curr_word), femaleNames, maleNamesList)
-                        replacement = replacement[0].upper() + replacement[1:]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-            i += 1
-        out_str += line
-    return out_str
-
-'''
-The same thing as the original genderSwapTesting function, but uses NER to find names!
-'''
-def GST2(gender_pairs_file, in_str):
-    maleNames, femaleNames, maleNamesList, femaleNamesList = createGenderedSetsAndLists()
-    orig_malenames, orig_femalenames = createGenderedSets()
-    genderPairs = createSwapDict(gender_pairs_file)
-
-    out_str = ""
-    lines = in_str.split('\n')
-
-    for line in lines:
-        i = 0
-        word_pos = -1
-        name_pos = findNames(line)
-        while i < len(line):
-            index_before_word = i
-            curr_word = ""
-
-            while(i < len(line) and not line[i].isspace()):
-                curr_word += line[i]
-                i += 1
-            word_pos += 1
-
-            if len(curr_word) > 0 and curr_word[0].isalpha():
-                clean_word = clean(curr_word)
-                if clean_word in genderPairs:
-                    replacement = genderPairs[clean(curr_word)]
-                    line = replaceInStr(replacement, curr_word, index_before_word, line)
-                elif word_pos in name_pos:
-                    if clean_word in maleNames and clean_word in femaleNames:
-                        # take the higher probability one
-                        replacement = ""
-                        if(maleNames[clean_word] > femaleNames[clean_word] and (clean_word in orig_malenames)):
-                            replacement = getName(clean(curr_word), maleNames, femaleNamesList)
-                        elif(clean_word in orig_femalenames):
-                            replacement = getName(clean(curr_word), femaleNames, maleNamesList)
-                        else:
-                            i += 1
-                            continue
-                        replacement = replacement[0].upper() + replacement[1:]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-                    elif clean_word in maleNames and clean_word in orig_malenames:
-                        replacement = getName(clean(curr_word), maleNames, femaleNamesList)
-                        replacement = replacement[0].upper() + replacement[1:]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-                    elif clean_word in femaleNames and clean_word in orig_femalenames:
-                        replacement = getName(clean(curr_word), femaleNames, maleNamesList)
-                        replacement = replacement[0].upper() + replacement[1:]
-                        line = replaceInStr(replacement, curr_word, index_before_word, line)
-            i += 1
-        out_str += line
-    return out_str
 
 
 if __name__ == '__main__':
+    #print(genderSwap('Mary has a little lamb and she went to the doctor', 'na', True))
+    print(genderSwap("Will she ever find her uncle or her aunt, or her sister, or her son?", 'na', True))
+    '''
     for file in os.listdir('./DatasetsToGenderSwap/QASRL_Dataset/'):
         out_file_name = './GenderswappedDatasets/' + file
-        os.makedirs(os.path.dirname(out_file_name), exist_ok=True)
-        genderSwap(gender_pairs_file, './DatasetsToGenderSwap/QASRL_Dataset/'+ file, out_file_name)
+        parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        os.makedirs(os.path.join(parent_dir,out_file_name), exist_ok=True)
+        genderSwap('./DatasetsToGenderSwap/QASRL_Dataset/'+ file, out_file_name)
+    '''

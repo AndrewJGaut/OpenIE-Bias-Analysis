@@ -1,11 +1,25 @@
+from __future__ import absolute_import
 import unittest
 import sys
+import os
+
 
 # we need these sys.path alterations so we can import files that aren't in the exact same directory as this UnitTests file
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/GenderSwapping/')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/PostProcessExtractionsNormalize')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/FilterGenderedSentences')
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/GenRawExtractionStats')
+this_dir_path = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, this_dir_path + '/GenderSwapping/')
+sys.path.insert(0, this_dir_path + '/PostProcessExtractionsNormalize')
+sys.path.insert(0, this_dir_path + '/FilterGenderedSentences')
+sys.path.insert(0, os.path.dirname(this_dir_path) + '/GenRawExtractionStats/')
+sys.path.insert(0, './GenderSwapping/')
+sys.path.insert(0, './PostProcessExtractionsNormalize')
+sys.path.insert(0,'./FilterGenderedSentences')
+sys.path.insert(0, this_dir_path)
+#sys.path.insert(0, '../GenRawExtractionStats/')
+
+#os.chdir('../')
+#sys.path.insert(0, 'GenRawExtractionsStats/')
+#os.chdir('AlterDataset/')
+
 from genderSwap import *
 from Normalize import *
 from filterGendered import *
@@ -20,18 +34,17 @@ class Tests(unittest.TestCase):
 
     def test_genderSwapNoName(self):
         self.assertEqual(
-            genderSwapTesting("../../NamesAndSwapLists/swap_list_norepeats.txt", "She was a secretary."),
+            genderSwapTesting("She was a secretary."),
             "he was a secretary."
         )
 
         self.assertEqual(
-            genderSwapTesting("../../NamesAndSwapLists/swap_list_norepeats.txt", "Her father did not like her mother; she was an actress."),
+            genderSwapTesting("Her father did not like her mother; she was an actress."),
             "his mother did not like his father; he was an actor."
         )
 
         self.assertEqual(
-            genderSwapTesting("../../NamesAndSwapLists/swap_list.txt",
-                              "Will she ever find her uncle or her aunt, or her sister, or her son?"),
+            genderSwapTesting("Will she ever find her uncle or her aunt, or her sister, or her son?"),
             "Will he ever find his aunt or his uncle, or his brother, or his daughter?"
         )
 
@@ -45,7 +58,7 @@ class Tests(unittest.TestCase):
 
 
 
-    #@unittest.skip
+    @unittest.skip
     def test_genderSwapNames(self):
         #this is hard to test because you'd have to manually average out the name counts to check if it's running correclty
         '''self.assertEqual(
@@ -92,17 +105,40 @@ class Tests(unittest.TestCase):
             "I like ACTORS!\n I don't like hers.\n"
         )
 
-    def test_genderSwap2(self):
-        '''self.assertEqual(
-            genderSwapTesting2("../../NamesAndSwapLists/swap_list.txt",
-                               "Will Amy ever find the love of her life?"),
-            "Will <MALE NAME> ever find the love his life?"
-        )'''
-        pass
-        '''self.assertEqual(
-            GST2("../../NamesAndSwapLists/swap_list.txt", "Will Amy ever find love?"),
-            "Will <MALE NAME> ever find love?"
-        )'''
+    def test_genderswapQASRL(self):
+        #os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'GenderSwapping'))
+
+        curr_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'GenderSwapping/Testing/TestInputs/QASRL_testfile_1.txt')
+        out_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'GenderSwapping/Testing/TestOutputs/QASRL_answerfile_1.txt')
+        #curr_file_path = './Testing/TestInputs/QASRL_testfile_1.txt'
+        #out_file_path = './Testing/TestOutputs/QASRL_answerfile_1.txt'
+        os.makedirs(os.path.dirname(curr_file_path), exist_ok=True)
+        os.makedirs(os.path.dirname(out_file_path), exist_ok=True)
+
+        # write our test stuff to the file
+        curr_file = open(curr_file_path, 'w')
+        curr_file.write("PROPBANK_57	1\n"
+                        + "His recent appearance at the Metropolitan Museum , dubbed `` A Musical Odyssey , '' was a case in point .\n"
+                        + "8	dubbed	2\n"
+                        + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
+                        + "what	was	_	dubbed	_	_	_	?	His recent appearance at the Metropolitan Museum\n\n")
+
+        #now, reset the file paths so they're not absolute
+        curr_file_path = 'Testing/TestInputs/QASRL_testfile_1.txt'
+        out_file_path = 'Testing/TestOutputs/QASRL_answerfile_1.txt'
+
+        genderswapQASRL(curr_file_path, out_file_path)
+        out_file = open(out_file_path, 'r')
+        self.assertEqual(
+            out_file.read(),
+            "PROPBANK_57	1\n"
+            + "Her recent appearance at the Metropolitan Museum , dubbed `` A Musical Odyssey , '' was a case in point .\n"
+            + "8	dubbed	2\n"
+            + "what	was	something	dubbed	_	_	_	?	A Musical Odyssey\n"
+            + "what	was	_	dubbed	_	_	_	?	Her recent appearance at the Metropolitan Museum"
+        )
+        out_file.close()
+
 
 if __name__ == '__main__':
     unittest.main()
