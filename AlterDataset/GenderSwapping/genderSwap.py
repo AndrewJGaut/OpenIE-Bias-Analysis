@@ -13,7 +13,6 @@ from NameProbs import NameProb
 from subprocess import Popen
 import sys
 from sys import stderr
-import inflect
 
 from nltk.tag import StanfordNERTagger
 from nltk.tokenize import word_tokenize
@@ -22,8 +21,10 @@ st = StanfordNERTagger('/Users/agaut/PycharmProjects/TestStuff/stanford-ner/clas
                        '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/stanford-ner-3.9.2.jar',
 					   encoding='utf-8')
 
+import inflect
 engine = inflect.engine()
 
+sys.path.insert(0, './')
 from os.path import dirname, abspath, join
 sys.path.insert(0, join(dirname(dirname(dirname(abspath(__file__)))), 'Utility/'))
 from utility import *
@@ -212,6 +213,20 @@ def replaceInStr(replacement, curr_word, index_before_word, line):
     return new_line
 
 
+def join_punctuation(seq, characters='.,;?!:\\()-\''):
+    characters = set(characters)
+    seq = iter(seq)
+    current = next(seq)
+
+    for nxt in seq:
+        if nxt in characters:
+            current += nxt
+        else:
+            yield current
+            current = nxt
+
+    yield current
+
 '''
 Parameters
     gender_pairs_file - the file containing all the swap pairs
@@ -230,13 +245,15 @@ def genderSwap(dataset_file_name, out_file_name, test=False):
     file = dataset_file_name
     lines = file.split('\n')
     if not test:
-        file = open(dataset_file_name, 'r')
+        #file = open(dataset_file_name, 'r')
+        file = getTextfile('NamesAndSwapLists', 'spaces_preprocessed_NOW_news_corpus.txt')
         lines = file.readlines()
 
     out_str = ""
     # start reading in lines from the dataset
     for line in lines:
         i = 0
+        print(line)
         words = word_tokenize(line)
         pos_tags = st.tag(words)
         for i in range(len(words)):
@@ -254,7 +271,7 @@ def genderSwap(dataset_file_name, out_file_name, test=False):
                     words[i] = getName(word, femaleNames, maleNamesList)
             elif word in genderPairs:
                 words[i] = genderPairs[word]
-        line = ' '.join(words)
+        line = ' '.join(join_punctuation(words))
         out_str += line + "\n"
     if not test:
         file.close()
@@ -311,8 +328,9 @@ def genderSwapTesting(in_str):
 
 
 if __name__ == '__main__':
+    genderSwap('spaces_preprocessed_NOW_news_corpus.txt', 'genderswapped_NOWcorpus.txt', False)
     #print(genderSwap('Mary has a little lamb and she went to the doctor', 'na', True))
-    print(genderSwap("Will she ever find her uncle or her aunt, or her sister, or her son?", 'na', True))
+    #print(genderSwap("Will she ever find her uncle or her aunt, or her sister; (or her son), she \" pondered \"?", 'na', True))
     '''
     for file in os.listdir('./DatasetsToGenderSwap/QASRL_Dataset/'):
         out_file_name = './GenderswappedDatasets/' + file

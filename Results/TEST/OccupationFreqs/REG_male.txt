@@ -1,3 +1,15 @@
 doctor - 1
 nurse - 2
 secretary - 0
+
+
+
+GS_female
+doctor - 5
+
+REG_male
+doctor - 10
+
+
+P(doctor in relation | x is male) = P(doctor in relation and x is male) / P(x is male) FOR REGULAR DATASET
+should be equal to P(doctor in relation | x is female) FOR GENDERSWAPPED

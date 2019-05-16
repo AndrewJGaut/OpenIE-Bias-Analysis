@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d505eb3-dcab-4a3f-aff2-f32647fccf7d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AlterDataset/GenderSwapping/NER/tagger" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AlterDataset/GenderSwapping/Testing/TestInputs/QASRL_testfile_1.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/AlterDataset/GenderSwapping/Testing/TestOutputs/QASRL_answerfile_1.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlterDataset/FilterGenderedSentences/filterGendered.py" afterPath="$PROJECT_DIR$/AlterDataset/FilterGenderedSentences/filterGendered.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlterDataset/GenderSwapping/genderSwap.py" afterPath="$PROJECT_DIR$/AlterDataset/GenderSwapping/genderSwap.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlterDataset/UnitTests.py" afterPath="$PROJECT_DIR$/AlterDataset/UnitTests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Results/TEST/OccupationFreqs/REG_male.txt" afterPath="$PROJECT_DIR$/Results/TEST/OccupationFreqs/REG_male.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,11 +19,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="genderSwap.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="genderSwap.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AlterDataset/GenderSwapping/genderSwap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="309" column="0" lean-forward="false" selection-start-line="309" selection-start-column="0" selection-end-line="309" selection-end-column="0" />
+            <state relative-caret-position="265">
+              <caret line="339" column="7" lean-forward="true" selection-start-line="339" selection-start-column="7" selection-end-line="339" selection-end-column="7" />
               <folding>
                 <element signature="e#144#153#0" expanded="true" />
               </folding>
@@ -38,8 +34,8 @@
       <file leaf-file-name="Normalize.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AlterDataset/PostProcessExtractionsNormalize/Normalize.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+            <state relative-caret-position="60">
+              <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -48,8 +44,28 @@
       <file leaf-file-name="GetOccupationFreqs.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/GetOccupationFreqs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2070">
-              <caret line="154" column="23" lean-forward="false" selection-start-line="154" selection-start-column="23" selection-end-line="154" selection-end-column="23" />
+            <state relative-caret-position="330">
+              <caret line="37" column="0" lean-forward="true" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="spaces_preprocessed_NOW_news_corpus.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/NamesAndSwapLists/spaces_preprocessed_NOW_news_corpus.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Occupation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/Occupation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -58,31 +74,9 @@
       <file leaf-file-name="filterGendered.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AlterDataset/FilterGenderedSentences/filterGendered.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-804">
-              <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="72" selection-end-column="19" />
+            <state relative-caret-position="348">
+              <caret line="130" column="24" lean-forward="false" selection-start-line="130" selection-start-column="24" selection-end-line="130" selection-end-column="24" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NameProbs.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AlterDataset/GenderSwapping/NameProbs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="2" lean-forward="false" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UnitTests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AlterDataset/UnitTests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="46" column="30" lean-forward="true" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="100" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -110,17 +104,17 @@
       <file leaf-file-name="REG_male.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Results/TEST/OccupationFreqs/REG_male.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="90">
+              <caret line="6" column="9" lean-forward="true" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UnitTests.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UnitTests.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/UnitTests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-267">
+            <state relative-caret-position="30">
               <caret line="3" column="6" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
               <folding />
             </state>
@@ -155,9 +149,10 @@
       <find>makedirs</find>
       <find>createNER</find>
       <find>QASRL_Data</find>
+      <find>clean</find>
       <find>name = clean(</find>
       <find>clean_word</find>
-      <find>clean</find>
+      <find>getTextfile</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -181,6 +176,7 @@
         <option value="$PROJECT_DIR$/UnitTests.py" />
         <option value="$PROJECT_DIR$/GenRawExtractionStats/UnitTests.py" />
         <option value="$PROJECT_DIR$/AlterDataset/UnitTests.py" />
+        <option value="$PROJECT_DIR$/Results/TEST/OccupationFreqs/REG_male.txt" />
         <option value="$PROJECT_DIR$/AlterDataset/FilterGenderedSentences/filterGendered.py" />
         <option value="$PROJECT_DIR$/AlterDataset/GenderSwapping/genderSwap.py" />
       </list>
@@ -270,16 +266,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="GenRawExtractionStats" />
+              <option name="myItemId" value="NamesAndSwapLists" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UnitTests.py" />
-              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Tests" />
-              <option name="myItemType" value="com.jetbrains.python.projectView.PyElementNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -296,6 +284,60 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpenIE-Bias-Analysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpenIE-Bias-Analysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AlterDataset" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpenIE-Bias-Analysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpenIE-Bias-Analysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AlterDataset" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GenderSwapping" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpenIE-Bias-Analysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OpenIE-Bias-Analysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AlterDataset" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="FilterGenderedSentences" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="filterGendered.py" />
+              <option name="myItemType" value="com.jetbrains.python.projectView.PyFileNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -304,22 +346,22 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/NamesAndSwapLists" />
+      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping" />
+      <recent name="$PROJECT_DIR$/AlterDataset/FilterGenderedSentences" />
+      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping/GenderswappedDatasets/GenderswappedQASRL" />
+      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping/DatasetsToGenderswap/QASRL_Dataset" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping" />
       <recent name="$PROJECT_DIR$/NamesAndSwapLists" />
       <recent name="$PROJECT_DIR$/AlterDataset/depedency_txt_files" />
       <recent name="$PROJECT_DIR$/AlterDataset/FilterGenderedSentences" />
       <recent name="$PROJECT_DIR$/AlterDataset/PostProcessNormalize" />
-      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping/GenderswappedDatasets/GenderswappedQASRL" />
-      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping/DatasetsToGenderswap/QASRL_Dataset" />
-      <recent name="$PROJECT_DIR$/AlterDataset/GenderSwapping" />
-      <recent name="$PROJECT_DIR$/AlterDataset" />
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in UnitTests (1)">
+  <component name="RunManager" selected="Python.genderSwap">
     <configuration default="false" name="GetOccupationFreqs" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -540,9 +582,9 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in UnitTests (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python.GetOccupationFreqs" />
-        <item index="2" class="java.lang.String" itemvalue="Python.genderSwap" />
+        <item index="0" class="java.lang.String" itemvalue="Python.genderSwap" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in UnitTests (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.GetOccupationFreqs" />
         <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in UnitTests" />
       </list>
     </recent_temporary>
@@ -601,7 +643,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3164983" sideWeight="0.50277996" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32888147" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.327212" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3164983" sideWeight="0.49722" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28451177" sideWeight="0.49722" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -842,44 +884,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AlterDataset/FilterGenderedSentences/filterGendered.py">
+    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/test.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-804">
-          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="72" selection-end-column="19" />
+        <state relative-caret-position="90">
+          <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AlterDataset/GenderSwapping/genderSwap.py">
+    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/UnitTests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="309" column="0" lean-forward="false" selection-start-line="309" selection-start-column="0" selection-end-line="309" selection-end-column="0" />
-          <folding>
-            <element signature="e#144#153#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="30">
+          <caret line="3" column="6" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/AlterDataset/PostProcessExtractionsNormalize/Normalize.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="24" lean-forward="true" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+        <state relative-caret-position="60">
+          <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/GetOccupationFreqs.py">
+    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/Occupation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2070">
-          <caret line="154" column="23" lean-forward="false" selection-start-line="154" selection-start-column="23" selection-end-line="154" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/test.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -894,17 +926,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Results/TEST/OccupationFreqs/REG_male.txt">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="9" lean-forward="true" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/GetOccupationFreqs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="37" column="0" lean-forward="true" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NamesAndSwapLists/spaces_preprocessed_NOW_news_corpus.txt">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GenRawExtractionStats/UnitTests.py">
+    <entry file="file://$PROJECT_DIR$/AlterDataset/FilterGenderedSentences/filterGendered.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-267">
-          <caret line="3" column="6" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        <state relative-caret-position="348">
+          <caret line="130" column="24" lean-forward="false" selection-start-line="130" selection-start-column="24" selection-end-line="130" selection-end-column="24" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlterDataset/GenderSwapping/genderSwap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="339" column="7" lean-forward="true" selection-start-line="339" selection-start-column="7" selection-end-line="339" selection-end-column="7" />
+          <folding>
+            <element signature="e#144#153#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
