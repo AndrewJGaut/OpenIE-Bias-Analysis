@@ -128,4 +128,4 @@ def getGenderedDatasetTesting(in_str):
     return out_str
 
 if __name__ == '__main__':
-    getGenderedDataset(file, out_file)
+    getGenderedDataset('', out_file)
