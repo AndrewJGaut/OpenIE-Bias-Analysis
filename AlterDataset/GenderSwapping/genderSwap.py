@@ -17,8 +17,11 @@ from sys import stderr
 from nltk.tag import StanfordNERTagger
 from nltk.tokenize import word_tokenize
 
-st = StanfordNERTagger('/Users/agaut/PycharmProjects/TestStuff/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz',
-                       '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/stanford-ner-3.9.2.jar',
+#st = StanfordNERTagger('/Users/agaut/PycharmProjects/TestStuff/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz',
+#                       '/Users/agaut/PycharmProjects/TestStuff/stanford-ner/stanford-ner-3.9.2.jar',
+#					   encoding='utf-8')
+st = StanfordNERTagger('NER/classifiers/english.all.3class.distsim.crf.ser.gz',
+                       'NER/stanford-ner-3.9.2.jar',
 					   encoding='utf-8')
 
 import inflect
@@ -328,9 +331,9 @@ def genderSwapTesting(in_str):
 
 
 if __name__ == '__main__':
-    genderSwap('spaces_preprocessed_NOW_news_corpus.txt', 'genderswapped_NOWcorpus.txt', False)
+    #genderSwap('spaces_preprocessed_NOW_news_corpus.txt', 'genderswapped_NOWcorpus.txt', False)
     #print(genderSwap('Mary has a little lamb and she went to the doctor', 'na', True))
-    #print(genderSwap("Will she ever find her uncle or her aunt, or her sister; (or her son), she \" pondered \"?", 'na', True))
+    print(genderSwap("Will she ever find her uncle or her aunt, or her sister; (or her son), she \" pondered \"?", 'na', True))
     '''
     for file in os.listdir('./DatasetsToGenderSwap/QASRL_Dataset/'):
         out_file_name = './GenderswappedDatasets/' + file
