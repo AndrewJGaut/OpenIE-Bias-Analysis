@@ -11,7 +11,7 @@ import inflect
 from Occupation import Occupation
 import os
 
-sys.path.insert(0, '/Users/agaut/PycharmProjects/OpenIEBias/AlterDataset/FilterGenderedSentences/')
+sys.path.insert(0, '../AlterDataset/FilterGenderedSentences/')
 from filterGendered import *
 
 
@@ -86,6 +86,7 @@ What it does:
 '''
 def getOccupationFreqs(relations_file_name):
     file = open(relations_file_name)
+    gender_frequency = [0,0]
 
     # get occupations set and gendered sets
     occupations = loadOccupations()
@@ -94,6 +95,8 @@ def getOccupationFreqs(relations_file_name):
     # create dictionaries that map occupations --> their frequencies
     # it uses Occupation objects so male and female frequencies are stored in same object
     occupationFreqs = dict()
+    occupationFreqs["total_male_relations"] = 0
+    occupationFreqs["total_female_relations"] = 0
 
     # set up inflect engine (this just allows for better cleaning)
     infl = inflect.engine()
@@ -122,6 +125,11 @@ def getOccupationFreqs(relations_file_name):
                 has_female_words = True
             if word in occupations and word not in occupations_in_this_extraction:
                 occupations_in_this_extraction.append(word)
+
+        if has_male_words:
+            occupationFreqs["total_male_relations"]+=1
+        if has_female_words:
+            occupationFreqs["total_female_relations"]+=1
 
         # now, update occupation frequency dictionaries
         for occupation in occupations_in_this_extraction:
@@ -167,17 +175,41 @@ def createOutputFiles(args, occupationFreqs):
     male_outfile = open(male_file_name, "w")
     female_outfile = open(female_file_name, "w")
 
+    #create stats files
+    male_stats_file_name =  './' + args.outfile_directory + 'OccupationStats/' + file_prepend + "_male.txt"
+    female_stats_file_name =  './' + args.outfile_directory + 'OccupationStats/' + file_prepend + "_female.txt"
+
+    os.makedirs(os.path.dirname(male_stats_file_name), exist_ok=True)
+    os.makedirs(os.path.dirname(female_stats_file_name), exist_ok=True)
+
+    male_stats_outfile = open(male_stats_file_name, "w")
+    female_stats_outfile = open(female_stats_file_name, "w")
+
+    total_male_relations = occupationFreqs["total_male_relations"]
+    total_female_relations = occupationFreqs["total_female_relations"]
+
+    #remove the keys from dict
+    occupationFreqs.pop("total_male_relations", None)
+    occupationFreqs.pop("total_female_relations", None)
+
+    male_stats_outfile.write("total_male_relations: " + str(total_male_relations) + '\n')
+    female_stats_outfile.write("total_female_relations: " + str(total_female_relations) + '\n')
 
     # write male file
     for occ in sorted(occupationFreqs, key=occupationFreqs.get, reverse=False):
         male_outfile.write(str(occupationFreqs[occ].occupation) + " - " + str(occupationFreqs[occ].get_male_freq()) + '\n')
+        male_stats_outfile.write(str(occupationFreqs[occ].occupation) + " - " + str((occupationFreqs[occ].get_male_freq()/total_male_relations)) + '\n')
 
     # write female file
     for occ in sorted(occupationFreqs, key=occupationFreqs.get, reverse=False):
         female_outfile.write(str(occupationFreqs[occ].occupation) + " - " + str(occupationFreqs[occ].get_female_freq()) + '\n')
-
+        female_stats_outfile.write(str(occupationFreqs[occ].occupation) + " - " + str((occupationFreqs[occ].get_female_freq()/total_female_relations)) + '\n')
+    
     male_outfile.close()
     female_outfile.close()
+
+    male_stats_outfile.close()
+    female_stats_outfile.close()
 
 
 '''
