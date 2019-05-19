@@ -176,8 +176,8 @@ def createOutputFiles(args, occupationFreqs):
     female_outfile = open(female_file_name, "w")
 
     #create stats files
-    male_stats_file_name =  './' + args.outfile_directory + 'OccupationStats/' + file_prepend + "_male.txt"
-    female_stats_file_name =  './' + args.outfile_directory + 'OccupationStats/' + file_prepend + "_female.txt"
+    male_stats_file_name =  './' + args.outfile_directory + 'OccupationStats/' + file_prepend + "_male_stats.txt"
+    female_stats_file_name =  './' + args.outfile_directory + 'OccupationStats/' + file_prepend + "_female_stats.txt"
 
     os.makedirs(os.path.dirname(male_stats_file_name), exist_ok=True)
     os.makedirs(os.path.dirname(female_stats_file_name), exist_ok=True)
@@ -293,9 +293,3 @@ if __name__ == '__main__':
     args = setUpCommandLine()
     occupationFreqs = getOccupationFreqs(args.extr_file)
     createOutputFiles(args, occupationFreqs)
-
-
-
-
-
-
