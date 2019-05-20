@@ -1,3 +1,0 @@
-doctor - 1
-nurse - 1
-secretary - 1
