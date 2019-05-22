@@ -335,7 +335,8 @@ def genderSwapTesting(in_str):
 
 if __name__ == '__main__':
     #genderSwap('spaces_preprocessed_NOW_news_corpus.txt', 'genderswapped_NOWcorpus.txt', False)
-    genderSwap('anonymized.txt', 'genderswapped_anonymized.txt', False)
+    #genderSwap('anonymized.txt', 'genderswapped_anonymized.txt', False)
+    genderSwap('lines_sents_regularNOW.txt', 'lines_sents_gsNOW.txt')
     #print(genderSwap('Mary has a little lamb and she went to the doctor', 'na', True))
 #print(genderSwap("Will she ever find her uncle or her aunt, or her sister; (or her son), she \" pondered \"?", 'na', True))
     '''

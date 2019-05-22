@@ -8,6 +8,7 @@ class Occupation:
         self.male_freq = 0
         self.female_freq = 0
         self.total_freq = 0
+        self.diff = 0
 
     def incr_male_freq(self):
         self.male_freq += 1
@@ -30,8 +31,21 @@ class Occupation:
     def get_occupation(self):
         return self.occupation
 
+    def difference(self, male_tot, female_tot):
+        self.diff = abs(float(self.male_freq / male_tot) - float(self.female_freq / female_tot))
+
     def __eq__(self, other):
         return self.occupation == other
 
+    '''
     def __lt__(self, other):
         return self.occupation < other.occupation
+    '''
+
+    def __lt__(self, other):
+        return self.diff < other.diff
+
+    def __str__(self):
+        return "{}: {}".format(self.occupation, self.diff)
+    def __repr__(self):
+        return "{}: {}".format(self.occupation, self.diff)
